@@ -6,6 +6,7 @@
   height: min(100vh, 812px);
   width: min(100vw, 375px);
   position: relative;
+  background-color: #000;
   border: 1px solid #cecece;
 }
 
