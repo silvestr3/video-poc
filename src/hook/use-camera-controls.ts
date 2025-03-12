@@ -146,9 +146,6 @@ export const useCameraControls = () => {
 
       if (isRecording || recordedVideoUrl === null) {
         videoRef.current.srcObject = streamRef.current;
-        videoRef.current.play().catch((error) => {
-          console.log("Error auto-playing live stream:", error);
-        });
         setIsPlayingPreview(false);
       } else {
         // For previewing recorded video, use src
