@@ -1,0 +1,78 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: min(100vh, 812px);
+  width: min(100vw, 375px);
+  position: relative;
+  border: 1px solid #cecece;
+}
+
+.loader {
+  color: black;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(360deg);
+  }
+}
+
+.video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.cameraButton {
+  width: 56px;
+  height: 56px;
+  background-color: #f6ffed;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  position: absolute;
+  bottom: 25px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.confirmButton {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background-color: #00c899;
+  color: #fff;
+  border: none;
+  width: 88px;
+  height: 32px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.closeButtonContainer {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  width: 40px;
+  height: 40px;
+  background-color: #00000099;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+
+  & .closeButton {
+    background-color: transparent;
+    border: none;
+    color: #fff;
+  }
+}
