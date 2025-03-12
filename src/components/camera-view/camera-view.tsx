@@ -11,6 +11,7 @@ export function CameraView({ closeCamera }: CameraViewProps) {
   const {
     handleCameraControls,
     playVideo,
+    discardRecording,
     recordedVideoUrl,
     elapsedTime,
     isRecording,
@@ -54,7 +55,10 @@ export function CameraView({ closeCamera }: CameraViewProps) {
         </>
       )}
 
-      <div onClick={closeCamera} className={styles.closeButtonContainer}>
+      <div
+        onClick={isPreviewMode ? discardRecording : closeCamera}
+        className={styles.closeButtonContainer}
+      >
         <X className={styles.closeButton} />
       </div>
 

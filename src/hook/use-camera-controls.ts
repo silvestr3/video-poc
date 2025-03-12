@@ -14,7 +14,7 @@ export const useCameraControls = () => {
   );
   const [recordedVideoUrl, setRecordedVideoUrl] = useState<string | null>(null);
   const [isPlayingPreview, setIsPlayingPreview] = useState(false);
-  const [recordedChunks, setRecordedChunks] = useState<Blob[]>([]);
+  const [, setRecordedChunks] = useState<Blob[]>([]);
   const [elapsedTime, setElapsedTime] = useState(0); // New state for elapsed time
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const streamRef = useRef<MediaStream | null>(null);
@@ -131,6 +131,14 @@ export const useCameraControls = () => {
     }
   }, [recordedVideoUrl]);
 
+  const discardRecording = () => {
+    if (recordedVideoUrl) {
+      URL.revokeObjectURL(recordedVideoUrl);
+    }
+    setRecordedVideoUrl(null);
+    chunksRef.current = [];
+  };
+
   useEffect(() => {
     if (videoRef.current) {
       videoRef.current.onpause = () => {
@@ -173,12 +181,12 @@ export const useCameraControls = () => {
   return {
     handleCameraControls,
     playVideo,
+    discardRecording,
     isPlayingPreview,
     recordedVideoUrl,
     elapsedTime,
     isRecording,
     isLoading,
     videoRef,
-    recordedChunks,
   };
 };
