@@ -24,7 +24,7 @@ export function ProgressTrack({
         r={radius}
         strokeWidth="5"
         fill="none"
-        stroke="transparent"
+        stroke="#ffffff33"
       />
       <circle
         cx="35"

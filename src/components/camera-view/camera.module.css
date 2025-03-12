@@ -85,3 +85,17 @@
   cursor: pointer;
   position: absolute;
 }
+
+.playButton {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #00000099;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  color: #fff;
+  border: none;
+  z-index: 100;
+}
