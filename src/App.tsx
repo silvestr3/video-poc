@@ -1,4 +1,4 @@
-import { CameraView } from "./components/camera-view";
+import { CameraView } from "./components/camera-view/camera-view";
 import "./App.css";
 import { useState } from "react";
 import { Camera } from "lucide-react";
