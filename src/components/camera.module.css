@@ -29,19 +29,6 @@
   left: 0;
 }
 
-.cameraButton {
-  width: 56px;
-  height: 56px;
-  background-color: #f6ffed;
-  border-radius: 50%;
-  border: none;
-  cursor: pointer;
-  position: absolute;
-  bottom: 25px;
-  left: 50%;
-  transform: translateX(-50%);
-}
-
 .confirmButton {
   position: absolute;
   top: 20px;
@@ -75,4 +62,31 @@
     border: none;
     color: #fff;
   }
+}
+
+.cameraButtonContainer {
+  width: 70px;
+  height: 70px;
+  position: absolute;
+  bottom: 25px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.progressSvg {
+  width: 70px;
+  height: 70px;
+}
+
+.cameraButton {
+  width: 56px;
+  height: 56px;
+  background-color: #f6ffed;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  position: absolute;
 }

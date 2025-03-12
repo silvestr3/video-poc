@@ -13,6 +13,7 @@ export function CameraView({ closeCamera }: CameraViewProps) {
     null
   );
   const [recordedChunks, setRecordedChunks] = useState<Blob[]>([]);
+  const [elapsedTime, setElapsedTime] = useState(0); // New state for elapsed time
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const streamRef = useRef<MediaStream | null>(null);
 
@@ -31,10 +32,11 @@ export function CameraView({ closeCamera }: CameraViewProps) {
           videoRef.current.play();
         }
 
-        // Store the stream reference for later use
         streamRef.current = stream;
       } catch (error) {
-        alert("Você precisa permitir o acesso à câmera e ao microfone para gravar videos");
+        alert(
+          "Você precisa permitir o acesso à câmera e ao microfone para gravar videos"
+        );
         console.error("Erro ao acessar a câmera e/ou microfone:", error);
       } finally {
         setIsLoading(false);
@@ -43,7 +45,6 @@ export function CameraView({ closeCamera }: CameraViewProps) {
 
     initializeCamera();
 
-    // Cleanup function to stop all tracks when component unmounts
     return () => {
       if (streamRef.current) {
         streamRef.current.getTracks().forEach((track) => track.stop());
@@ -51,12 +52,40 @@ export function CameraView({ closeCamera }: CameraViewProps) {
     };
   }, []);
 
+  const stopRecording = useCallback(() => {
+    if (!mediaRecorder) return;
+
+    mediaRecorder.stop();
+    setIsRecording(false);
+  }, [mediaRecorder]);
+
+  // Manage elapsed time and enforce 3-minute limit
+  useEffect(() => {
+    if (isRecording) {
+      const interval = setInterval(() => {
+        setElapsedTime((prev) => prev + 1);
+      }, 1000);
+      return () => {
+        clearInterval(interval);
+        setElapsedTime(0); // Reset elapsed time when recording stops
+      };
+    }
+  }, [isRecording]);
+
+  useEffect(() => {
+    if (elapsedTime >= 180 && isRecording) {
+      stopRecording(); // Stop recording after 3 minutes
+    }
+  }, [elapsedTime, isRecording, stopRecording]);
+
   const startRecording = useCallback(() => {
     try {
       if (!streamRef.current) {
         console.error("Stream não está disponível");
         return;
       }
+
+      setRecordedChunks([]); // Clear previous chunks before new recording
 
       const mimeTypes = [
         "video/webm;codecs=vp9,opus",
@@ -95,13 +124,6 @@ export function CameraView({ closeCamera }: CameraViewProps) {
     }
   }, []);
 
-  const stopRecording = useCallback(() => {
-    if (!mediaRecorder) return;
-
-    mediaRecorder.stop();
-    setIsRecording(false);
-  }, [mediaRecorder]);
-
   const downloadVideo = useCallback(() => {
     if (recordedChunks.length === 0) return;
 
@@ -128,6 +150,13 @@ export function CameraView({ closeCamera }: CameraViewProps) {
     );
   }
 
+  // Constants for the progress circle
+  const radius = 35;
+  const circumference = 2 * Math.PI * radius;
+  const progress = Math.min(elapsedTime / 180, 1);
+
+  console.log(progress);
+
   return (
     <div className={styles.container}>
       <video className={styles.video} ref={videoRef} autoPlay muted />
@@ -138,14 +167,45 @@ export function CameraView({ closeCamera }: CameraViewProps) {
       )}
 
       <div onClick={closeCamera} className={styles.closeButtonContainer}>
-          <X className={styles.closeButton} />
+        <X className={styles.closeButton} />
       </div>
 
-      <button
-        className={styles.cameraButton}
-        onClick={handleCameraControls}
-        title={isRecording ? "Parar gravação" : "Iniciar gravação"}
-      />
+      <div className={styles.cameraButtonContainer}>
+        {isRecording && (
+          <svg
+            className={styles.progressSvg}
+            width="90"
+            height="90"
+            viewBox="-5 -5 80 80"
+          >
+            <circle
+              cx="35"
+              cy="35"
+              r={radius}
+              strokeWidth="5"
+              fill="none"
+              stroke="transparent"
+            />
+            <circle
+              cx="35"
+              cy="35"
+              r={radius}
+              stroke="#00c899"
+              strokeWidth="5"
+              fill="none"
+              strokeLinecap="round"
+              strokeDasharray={circumference}
+              strokeDashoffset={circumference * (1 - progress)}
+              transform="rotate(-90 35 35)"
+            />
+          </svg>
+        )}
+        <button
+          className={styles.cameraButton}
+          onClick={handleCameraControls}
+          title={isRecording ? "Parar gravação" : "Iniciar gravação"}
+        />
+      </div>
     </div>
   );
 }
