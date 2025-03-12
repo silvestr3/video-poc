@@ -14,8 +14,7 @@ export const useCameraControls = () => {
   );
   const [recordedVideoUrl, setRecordedVideoUrl] = useState<string | null>(null);
   const [isPlayingPreview, setIsPlayingPreview] = useState(false);
-  const [, setRecordedChunks] = useState<Blob[]>([]);
-  const [elapsedTime, setElapsedTime] = useState(0); // New state for elapsed time
+  const [elapsedTime, setElapsedTime] = useState(0);
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const streamRef = useRef<MediaStream | null>(null);
   const chunksRef = useRef<Blob[]>([]);

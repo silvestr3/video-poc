@@ -2,12 +2,15 @@ import styles from "./camera.module.css";
 import { Loader2, Play, X } from "lucide-react";
 import { ProgressTrack } from "../progress-track/progress-track";
 import { useCameraControls } from "../../hook/use-camera-controls";
+import { Dispatch } from "react";
+import { SetStateAction } from "react";
 
 interface CameraViewProps {
   closeCamera: () => void;
+  setVideoSource: Dispatch<SetStateAction<string | null>>;
 }
 
-export function CameraView({ closeCamera }: CameraViewProps) {
+export function CameraView({ closeCamera, setVideoSource }: CameraViewProps) {
   const {
     handleCameraControls,
     playVideo,
@@ -51,7 +54,15 @@ export function CameraView({ closeCamera }: CameraViewProps) {
               <Play />
             </button>
           )}
-          <button className={styles.confirmButton}>Avançar</button>
+          <button
+            onClick={() => {
+              setVideoSource(recordedVideoUrl);
+              closeCamera();
+            }}
+            className={styles.confirmButton}
+          >
+            Avançar
+          </button>
         </>
       )}
 
