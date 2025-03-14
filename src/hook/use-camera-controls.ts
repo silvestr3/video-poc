@@ -36,7 +36,7 @@ export const useCameraControls = () => {
         streamRef.current = stream;
       } catch (error) {
         alert(
-          "Você precisa permitir o acesso à câmera e ao microfone para gravar videos"
+            error
         );
         console.error("Erro ao acessar a câmera e/ou microfone:", error);
       } finally {
