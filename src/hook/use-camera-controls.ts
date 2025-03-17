@@ -22,6 +22,9 @@ export const useCameraControls = () => {
   useEffect(() => {
     const initializeCamera = async () => {
       setIsLoading(true);
+
+      
+
       try {
         const stream = await navigator.mediaDevices.getUserMedia({
           video: true,
